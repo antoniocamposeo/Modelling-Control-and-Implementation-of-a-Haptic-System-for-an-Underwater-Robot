@@ -1,5 +1,6 @@
-/*----------------------------
+/*! ----------------------------
  * Final Version of OpenCM904*
+  @author Antonio Camposeo Politecnico di Bari   
 -----------------------------*/
 /*Import Libraries*/
 #include "ros.h"
