@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<launch>
+    <rosparam file="$(find bluerov2)/config/bluerov2/vel_pid_control.yaml" command="load"/>
+
+    <node pkg="bluerov2" type="VelocityControl.py" name="velocity_control"
+        output="log">
+      <remap from="odom" to="/BlueRov2/odometry"/>
+      <remap from="cmd_vel" to="/command_teleop"/> 
+      <remap from="cmd_accel" to="/BlueRov2/cmd_accel"/>
+    </node>
+
+  <include file="$(find bluerov2)/launch/bluerov2_teleop_keyboard.launch"> </include>
+  
+</launch>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+ 	<arg name="record_motor" default="true" />
+  	<!-- start control node -->
+	<!--
+	<arg name="node_start_delay" default="1.0"/>  
+	 <node pkg="bluerov2" type="bluerov2_node.py" name="bluerov2_node" output="screen"/>-->
+	<!-- <node pkg="bluerov2" type="bluerov2_controller.py" name="bluerov2_controller" output="screen"/> -->
+	
+ 	<!--<node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+    		<param name="port" value="/dev/ttyACM0"/>
+    		<param name="baud" value="115200"/>
+  	</node>-->
+
+  	<node pkg="bluerov2" type="identification_motors_test.py" name="opencm_identification" output="screen"/> 
+  	<!--<node pkg="bluerov2" type="test_step_motor.py" name="opencm_identification" output="screen"/>--> 
+  	
+
+</launch>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- start control node -->
+	<node pkg="bluerov2" type="bluerov2_node.py" name="bluerov2_node" output="screen"/>
+	<node pkg="bluerov2" type="bluerov2_controller.py" name="bluerov2_controller" output="screen"/>
+</launch>

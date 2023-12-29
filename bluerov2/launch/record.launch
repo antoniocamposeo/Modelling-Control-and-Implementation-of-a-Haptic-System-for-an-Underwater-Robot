@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+	<node pkg="rosbag" type="record" name="rosbag_record_identification"
+      			 args="record -o test.bag /opencm904/motor_actual_position_raw /opencm904/sensor_ft_data /motor_position" />
+	<!-- <node pkg="rosbag" type="record" name="rosbag_record_identification"
+      			 args="record -o test.bag /opencm904/sensor_ft_data" />-->     			 
+</launch>
