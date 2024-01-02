@@ -164,7 +164,7 @@ class OpenCM:
         try:
             while not rospy.is_shutdown():
                 self.publish()
-                rate.sleep()
+                rate.sleep() # Test with rospy.spin()
         except Exception as e:
             print(" An Exception occurred during the control loop. Terminating gracefully.")
             print(" Exception: ", e)
