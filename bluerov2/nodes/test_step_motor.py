@@ -1,14 +1,10 @@
 #!/usr/bin/env python
-# license removed for brevity
 import rospy
 import numpy as np
-
-
-
 from std_msgs.msg import Int32MultiArray
 
-step_angle = 4095 / 360  # 11.377777 convert from step to angle
-step_value = 360 / 4095  # 0.087890625
+step_angle = 4093 / 360  # 11.377777 convert from step to angle
+step_value = 360 / 4093  # 0.087890625
 
 
 def convert_to_deg(value):
@@ -22,8 +18,8 @@ def convert_to_deg(value):
 
 def convert_to_val(angle):
     value = round(angle / step_value, 2)
-    if value > 4095:
-        value = 4095
+    if value > 4093:
+        value = 4093
     elif value < 0:
         value = 0
     return int(value)
@@ -90,9 +86,3 @@ if __name__ == '__main__':
 
 
 
-#
-#
-#
-#
-#
-#
