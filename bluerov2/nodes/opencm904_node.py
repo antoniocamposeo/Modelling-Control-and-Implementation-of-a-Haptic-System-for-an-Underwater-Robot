@@ -1,9 +1,9 @@
 import rospy
 import numpy as np
 import time
-import sys
+# import sys
 
-sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
+# sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
 
 # Message into folder of package
 from bluerov2.msg import FTSensor
