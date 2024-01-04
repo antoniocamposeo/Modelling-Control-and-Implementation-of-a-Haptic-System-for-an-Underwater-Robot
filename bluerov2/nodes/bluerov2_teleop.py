@@ -17,7 +17,7 @@ from __future__ import print_function
 
 import os
 import select
-import sys
+#import sys
 import termios
 import time
 import tty
@@ -25,7 +25,7 @@ import tty
 import rospy
 from geometry_msgs.msg import Twist, Accel, Vector3
 
-sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
+# sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
 class KeyBoardVehicleTeleop:
     def __init__(self):
         # Class Variables
