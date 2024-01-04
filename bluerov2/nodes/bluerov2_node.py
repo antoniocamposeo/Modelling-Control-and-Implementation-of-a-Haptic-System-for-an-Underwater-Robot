@@ -1,10 +1,6 @@
-# !/usr/bin/env python3 Implemented to convert bluerov's IMU, camera, and status information into ros msgs The
-# BlueRov class inherits from Bridge
-# TODO: DIVIDERE PUB E SUB IN MODO CHE OPERANO IN RATE DIFFERENTI TODO: TESTARE I
-#  PID DI POSIZIONE E VELOCITA, I FB DI POSIZIONE  E VELOCITA CI SONO. STA PRENDERE I DATI DAI NODI DI CONTROLLO
-# TODO: E INVIARE I VALORI DI CMD OTTENUTI AL ROV SIMULATO, OVVIAMENTE STA DA TESTARE SE SI MUOVE CON IL DEPTH HOLD,
-# TODO: DOPO AVER TESTATO QUESTO MAPPARE I VALORI DATI DAL PID NEI VALORI DA INVIARE AL SISITEMA.
-
+# !/usr/bin/env python3 
+# Implemented to convert bluerov's IMU, camera, and status information into ros msgs 
+# The BlueRov class inherits from Bridge
 
 from __future__ import division
 
@@ -15,13 +11,13 @@ import re
 import numpy as np
 import rospy
 import numpy
-import sys
+# import sys
 import time
 import utm
 import socket
 
-sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
-from src.bluerov2_bridge_mavlink import Bridge
+# sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
+from bluerov2.src.bluerov2_bridge_mavlink import Bridge
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import BatteryState
 from geometry_msgs.msg import Twist,Accel
@@ -59,19 +55,19 @@ class BlueRov(Bridge):
                 [
                     self._create_battery_msg,
                     BatteryState,
-                    1
+                    10
                 ],
             '/state':
                 [
                     self._create_rov_state,
                     State,
-                    1
+                    10
                 ],
             '/odometry':
                 [
                     self._create_odometry_msg,
                     Odometry,
-                    1
+                    10
                 ],
 
         }
@@ -80,7 +76,7 @@ class BlueRov(Bridge):
             #    [self._control_callback,
             #     Twist,
             #     1]
-            '/BlueRov2/cmd_accel':
+            '/BlueRov2/cmd_vel':
                 [self._control_callback,
                  Accel,
                  10]
@@ -235,7 +231,14 @@ class BlueRov(Bridge):
 
         self.pub_topics[topic][3].publish(data)
 
+    '''
     def _create_sensor_ft_msg(self, topic):
+        """
+        Create force state message from ROV data
+
+        Raises:
+            Exception: No data available
+        """
         [fx, fy, fz, mx, my, mz] = self.get_data_force_torque_sensor()
         print([fx, fy, fz, mx, my, mz])
         msg = FTSensor()
@@ -246,7 +249,7 @@ class BlueRov(Bridge):
         msg.m_y = my
         msg.m_z = mz
         self.pub_topics[topic][3].publish(msg)
-
+    '''
     def _control_callback(self, msg):
         self.control_actions = [msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z]
 
@@ -295,12 +298,9 @@ def main():
     try:
         while not rospy.is_shutdown():
             try:
-                print(-1)
-
+                rospy.loginfo("Section -1 ")
                 # bluerov = BlueRov(device='udp:192.168.2.1:14550', source_system=1, source_component=1)
                 bluerov = BlueRov(device='udp:localhost:14450', source_system=1, source_component=1)
-
-
             except socket.error:
                 rospy.logerr(
                     'Failed to make mavlink connection to device {}'.format(device)
@@ -313,13 +313,12 @@ def main():
             sys.exit(-1)
 
         while not rospy.is_shutdown():
-            print(1)
+            rospy.loginfo("Section 1, MANUAL MODE, ARM FALSE ")
             bluerov.set_mode('MANUAL')
             bluerov.arm_throttle(False)
             mode, arm = bluerov.get_mode()
             if mode == 'MANUAL' and not arm:
                 break
-            print(1)
             rate.sleep()
 
         if armed:
@@ -339,11 +338,11 @@ def main():
             bluerov.publish()
             bluerov.send_control_actions()
             # print(bluerov.control_actions)
-            print(2)
+            rospy.loginfo("Section 2, MANUAL MODE, ARM TRUE ")
             rate.sleep()
 
         rospy.on_shutdown(shutdown)
-
+        rospy.loginfo("Section 3, MANUAL MODE, ARM FALSE ")
         while not rospy.is_shutdown():
             bluerov.set_mode('MANUAL')
             bluerov.arm_throttle(False)
