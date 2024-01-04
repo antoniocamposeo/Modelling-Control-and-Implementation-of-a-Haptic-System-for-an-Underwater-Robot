@@ -66,9 +66,9 @@ class KeyBoardVehicleTeleop:
                                          'twist or accel')
         # Name Publisher topics accordingly
         if self._msg_type == 'twist':
-            self._output_pub = rospy.Publisher('/Keyboard_teleop', Twist, queue_size=1)
+            self._output_pub = rospy.Publisher('/keyboard_teleop', Twist, queue_size=1)
         else:
-            self._output_pub = rospy.Publisher('/Keyboard_teleop', Accel, queue_size=1)
+            self._output_pub = rospy.Publisher('/keyboard_teleop', Accel, queue_size=1)
 
         print(self.msg)
 
