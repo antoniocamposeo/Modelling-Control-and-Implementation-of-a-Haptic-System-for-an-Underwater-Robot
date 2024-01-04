@@ -60,7 +60,7 @@ class BlueRovControl:
                     Odometry,
                     1
                 ],
-            '/command_teleop':
+            '/keyboard_teleop':
                 [
                     self._command_teleop_callback,
                     Twist,
