@@ -1,10 +1,10 @@
 import rospy
 import numpy as np
 import time
-import sys
+#import sys
 
-sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
-from nodes.opencm904_node import OpenCM
+#sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
+from bluerov2.nodes.opencm904_node import OpenCM
 from std_msgs.msg import Int32MultiArray, Float32MultiArray
 from bluerov2.msg import FTSensor
 from geometry_msgs.msg import Twist
@@ -48,9 +48,9 @@ class OpenCM_Control(OpenCM):
                  2]
 
         }
-        self.mavlink_msg_available = {}
+        self.msg_available = {}
         for topic, pubs in self.pub_topics.items():
-            self.mavlink_msg_available[topic] = 0  # Control of transmission frequency
+            self.msg_available[topic] = 0  # Control of transmission frequency
 
             pubs.append(rospy.Publisher(topic, pubs[1],
                                         queue_size=pubs[2]))  # add object publisher into each pub_topic
@@ -59,6 +59,10 @@ class OpenCM_Control(OpenCM):
             rospy.Subscriber(topic, msg_type, callback, queue_size=queue_size)
 
     def _create_desired_motor_pos_state(self, topic):
+        """
+        Create and Publish data of motor desired position 
+        Set the reset status of the OpenCM9.04 
+        """
         msg = Int32MultiArray()
         self.motors_desired_position = [self.convert_to_val(self.teleop_value[0]),
                                         self.convert_to_val(self.teleop_value[1])]
@@ -69,28 +73,43 @@ class OpenCM_Control(OpenCM):
         self.pub_topics[topic][3].publish(msg)
 
     def _motor_opencm_callback(self, msg):
+        """
+        Callback function to store motor actual position
+        """
         self.motors_actual_position = msg.data
 
     def _status_board_callback(self, msg):
+        """
+        Callback function to store the status of the board
+        """
         self.reset_status_board = msg.data[1]
         self.reset_status = msg.data[0]
 
     def _data_sensor_conv_callback(self, msg):
+        """
+        Callback function to store sensor data
+        """
         self.sensor_ft_data = [msg.f_x, msg.f_y, msg.f_z, msg.m_x, msg.m_y, msg.m_z]
 
     def _motor_opencm_teleop_callback(self, msg):
+        """
+        Callback function to store control via keyboard 
+        """
         self.teleop_value = [msg.angular.z, msg.angular.x]
 
     def control_algorithm(self):
+        """
+        Function to be implemented, use for the control action 
+        """
         None
 
     def publish(self):
         for topic, pubs in self.pub_topics.items():
             try:
-                if time.time() - self.mavlink_msg_available[topic] > 1:
+                if time.time() - self.msg_available[topic] > 1:
                     pubs[0](topic)
             except Exception as e:
-                self.mavlink_msg_available[topic] = time.time()
+                self.msg_available[topic] = time.time()
 
                 print(" An Exception occurred during the publish. Terminating gracefully.")
                 print(" Exception: ", e)
