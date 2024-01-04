@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 Implemented mavlink data parsing
-Before using it, you need to change the ip and port, the default is bluerov2 .
+Before using it, you need to change the ip and port, the default is bluerov2 (udpin:192.168.2.1:14550)
 """
+# Import Libraries 
 import time
 import numpy as np
 from pymavlink import mavutil
@@ -71,7 +72,8 @@ class Bridge(object):
         return msgs
 
     def update(self):
-        """ Update data dict
+        """ 
+        Update data dict
         """
         # Get all messages
         msgs = self.get_all_msgs()
@@ -80,12 +82,14 @@ class Bridge(object):
             self.data[msg.get_type()] = msg.to_dict()
 
     def print_data(self):
-        """ Debug function, print data dict
+        """
+        Debug function, print data dict
         """
         print(self.data)
 
     def set_mode(self, mode):
-        """ Set ROV mode
+        """ 
+        Set ROV mode
             http://ardupilot.org/copter/docs/flight-modes.html
 
         Args:
@@ -103,7 +107,8 @@ class Bridge(object):
         self.conn.set_mode(mode_id)
 
     def decode_mode(self, base_mode, custom_mode):
-        """ Decode mode from heartbeat
+        """ 
+        Decode mode from heartbeat
             http://mavlink.org/messages/common#heartbeat
 
         Args:
@@ -137,14 +142,16 @@ class Bridge(object):
         return flight_mode, arm
 
     def set_guided_mode(self):
-        """ Set guided mode
+        """
+        Set guided mode
         """
         # https://github.com/ArduPilot/pymavlink/pull/128
         params = [mavutil.mavlink.MAV_MODE_GUIDED, 0, 0, 0, 0, 0, 0]
         self.send_command_long(mavutil.mavlink.MAV_CMD_DO_SET_MODE, params)
 
     def send_command_long(self, command, params=[0, 0, 0, 0, 0, 0, 0], confirmation=0):
-        """ Function to abstract long commands
+        """ 
+        Function to abstract long commands
 
         Args:
             command (mavlink command): Command
@@ -284,6 +291,9 @@ class Bridge(object):
         self.conn.calibrate_pressure()
 
     def get_battery(self):
+        """ 
+        Get Battery State
+        """
         try:
             v = self.get_data()['SYS_STATUS']['voltage_battery'] / 1000.0
             a = self.get_data()['SYS_STATUS']['current_battery'] / 100.0
@@ -292,6 +302,9 @@ class Bridge(object):
             return 0.0, 0.0
 
     def get_mode(self):
+        """ 
+        Get Mode 
+        """
         try:
             base_mode = self.get_data()['HEARTBEAT']['base_mode']
             custom_mode = self.get_data()['HEARTBEAT']['custom_mode']
@@ -300,6 +313,14 @@ class Bridge(object):
             return 'MANUAL', False
 
     def set_cmd_vel(self, pwm_linear_x=1500, pwm_linear_y=1500, pwm_linear_z = 1500 ,pwm_angular_z=1500):
+        """ 
+        Set pwn to move the rov in 3 direction and 1 rotation.
+        arg_value: min 1100 - max 1900
+        int: pwm_linear_x 
+        int: pwm_linear_y 
+        int: pwm_linear_z 
+        int: pwm_angular_z 
+        """
         rc_channel_values = [0 for _ in range(18)]
         rc_channel_values[0:8] = [1500 for _ in range(8)]
         rc_channel_values[3] = int(pwm_angular_z)
@@ -321,6 +342,8 @@ class Bridge(object):
         except:
             return [1500, 1500, 1500, 1500]
 
+   '''
+    # Test function to get data of sensor from mavlink protocol.   
     def get_data_force_torque_sensor(self):
         if self.data.keys().__contains__('NAMED_VALUE_INT') is True and self.data.keys().__contains__('DEBUG_VECT') is True:
             f_x_raw = int(self.get_data()['NAMED_VALUE_INT']['name'])
@@ -344,7 +367,7 @@ class Bridge(object):
             return [f_x, f_y, f_z, m_x, m_y, m_z]
         else:
             return [0, 0, 0, 0, 0, 0]
-
+        '''
 
 if __name__ == '__main__':
     bridge = Bridge()
