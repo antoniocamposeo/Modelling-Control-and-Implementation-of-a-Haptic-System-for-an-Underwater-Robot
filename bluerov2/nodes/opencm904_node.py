@@ -13,7 +13,6 @@ from std_msgs.msg import Float32MultiArray
 
 class OpenCM:
     def __init__(self):
-        self.offset_bool = True
         self.name_node = "opencm904"
         self.pub_topics = {
             '/motor_actual_position_raw':
@@ -49,6 +48,7 @@ class OpenCM:
         self.MIN_ANGLE = 0
         self.data = ""
         self.k = 0
+        self.offset_bool = True
         self.offset = None
         self.motors_actual_position = [0.0,  # upper motor id : 1
                                        0.0]  # lower motor id : 2
@@ -64,9 +64,9 @@ class OpenCM:
                                     [0, 0, 0.0735632, 0, -0.0758621, 0],
                                     [-0.0804598, 0, 0.0436782, 0, 0.0436782, 0],
                                     [0, -0.0436782, 0, -0.0436782, 0.00229885, -0.0436782]])
-        self.mavlink_msg_available = {}
+        self.msg_available = {}
         for topic, pubs in self.pub_topics.items():
-            self.mavlink_msg_available[topic] = 0  # Control of transmission frequency
+            self.msg_available[topic] = 0  # Control of transmission frequency
             pubs.append(rospy.Publisher(self.name_node + topic, pubs[1],
                                         queue_size=pubs[2]))  # add object publisher into each pub_topic
         for topic, subs in self.sub_topics.items():
@@ -151,10 +151,10 @@ class OpenCM:
         """
         for topic, pubs in self.pub_topics.items():
             try:
-                if time.time() - self.mavlink_msg_available[topic] > 1:
+                if time.time() - self.msg_available[topic] > 1:
                     pubs[0](topic)
             except Exception as e:
-                self.mavlink_msg_available[topic] = time.time()
+                self.msg_available[topic] = time.time()
                 print(" An Exception occurred during the publish. Terminating gracefully.")
                 print(" Exception: ", e)
 
