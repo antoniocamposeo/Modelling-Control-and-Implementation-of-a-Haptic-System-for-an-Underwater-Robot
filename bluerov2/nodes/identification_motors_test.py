@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# license removed for brevity
 import rospy
 import numpy as np
 from std_msgs.msg import Int32MultiArray
@@ -10,7 +9,7 @@ from std_msgs.msg import Int32MultiArray
 """
 # array = np.loadtxt('/csv_files/sin_5.csv')
 # array = np.loadtxt('/csv_files/sin_1.csv')
-array = np.loadtxt('/home/antonio/catkin_ws/src/bluerov2/nodes/logaritmic_chirp_3deg.csv')
+array = np.loadtxt('../catkin_ws/src/bluerov2/nodes/logaritmic_chirp_3deg.csv')
 
 array = array.T
 
