@@ -24,8 +24,8 @@ import tf.transformations as trans
 from rospy.numpy_msg import numpy_msg
 
 # Modules included in this package
-sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
-from src.PIDRegulator import PIDRegulator
+# sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
+from bluerov2.src.PIDRegulator import PIDRegulator
 from bluerov2.cfg import VelocityControlConfig
 
 
