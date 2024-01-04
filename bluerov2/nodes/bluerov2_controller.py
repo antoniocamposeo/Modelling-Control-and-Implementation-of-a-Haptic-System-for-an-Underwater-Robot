@@ -3,9 +3,9 @@
 import rospy
 import numpy as np
 import time
-import sys
+# import sys
 
-sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
+# sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
 
 from geometry_msgs.msg import Twist,Accel
 from nav_msgs.msg import Odometry
@@ -15,13 +15,13 @@ from sensor_msgs.msg import BatteryState
 from bluerov2.msg import State
 
 from tf.transformations import euler_from_quaternion
-from src.bluerov2_bridge_mavlink import Bridge
+from bluerov2.src.bluerov2_bridge_mavlink import Bridge
 
 
 class BlueRovControl:
     def __init__(self):
-        self.ROV_name = '/BlueRov2_control'
-        self.model_base_link = '/base_link'
+        self.ROV_name = '/BlueRov2_control'  
+        self.model_base_link = '/base_link' 
         self.control_actions = [0, 0, 0, 0]
         self.move_cmd = Twist()
         self.ROV_data = {'Battery': {'Voltage': None,
@@ -127,24 +127,16 @@ class BlueRovControl:
         self.move_cmd.angular.z = self.control_actions[3]
         self.pub_topics[topic][3].publish(self.move_cmd)
 
-
-
-
 def main():
-
     # device='udpin:0.0.0.0:14550'
     # device='udpin:192.168.2.1:14550'
     rospy.init_node("bluerov2_controller")
-
     BR2_control = BlueRovControl()
-
-    rate = rospy.Rate(50)
-
+    rate = rospy.Rate(20)
     try:
         while not rospy.is_shutdown():
             print(BR2_control.control_actions)
             BR2_control.create_control_msg('/cmd_vel')
-
             rate.sleep()
     except Exception as e:
         print(" An Exception occurred during the control loop. Terminating gracefully.")
