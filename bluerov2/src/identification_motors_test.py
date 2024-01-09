@@ -9,7 +9,7 @@ from std_msgs.msg import Int32MultiArray
 """
 # array = np.loadtxt('/csv_files/sin_5.csv')
 # array = np.loadtxt('/csv_files/sin_1.csv')
-array = np.loadtxt('../catkin_ws/src/bluerov2/nodes/logaritmic_chirp_3deg.csv')
+array = np.loadtxt('../catkin_ws/src/bluerov2/csv_files/logaritmic_chirp_3deg.csv')
 
 array = array.T
 
@@ -70,7 +70,7 @@ def main():
             elif i >= len(array) - 1:
                 print("Stop Identification!!!")
                 msg_position.data = [convert_to_val(start_position_motor_1), convert_to_val(180),0]
-        print(f"t:{t},i:{i},data_val:{convert_to_val(array[i])},data_arr:{array[i]},status:{reset_status},status_board{reset_status_board}")
+        print(f"t:{t},i:{i},data_val:{convert_to_val(array[i])},data_arr:{array[i]},status:{reset_status},status_board:{reset_status_board}")
         t = t + 1
         pub.publish(msg_position)
         rate.sleep()
