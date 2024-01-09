@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   dynamic_reconfigure
 )
+catkin_python_setup()
 
 ## Generate messages in the 'msg' folder
 add_message_files(
@@ -21,7 +22,6 @@ add_message_files(
 )
 generate_dynamic_reconfigure_options(
 
-  cfg/PositionControl.cfg
   cfg/VelocityControl.cfg
 )
 ## Generate added messages and services with any dependencies listed here
@@ -55,22 +55,21 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-   nodes/bluerov2_node.py
-   nodes/bluerov2_controller.py
-   nodes/identification_motors_test.py
-   nodes/test_step_motor.py
-   src/bluerov2_bridge_mavlink.py
-   nodes/bluerov2_teleop.py
-   nodes/opencm904_node.py
-   nodes/opencm904_control.py
-   nodes/opencm904_teleop.py
+   src/bluerov2_node.py
+   src/bluerov2_controller.py
+   src/identification_motors_test.py
+   src/test_step_motor.py
+   src/bluerov2_teleop.py
+   src/opencm904_node.py
+   src/opencm904_control.py
+   src/opencm904_teleop.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(
-   DIRECTORY launch src msg nodes config
+   DIRECTORY launch src msg config
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
  )
 

@@ -17,7 +17,7 @@ from __future__ import print_function
 
 import os
 import select
-#import sys
+
 import termios
 import time
 import tty
@@ -25,7 +25,7 @@ import tty
 import rospy
 from geometry_msgs.msg import Twist, Accel, Vector3
 
-# sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
+
 class KeyBoardVehicleTeleop:
     def __init__(self):
         # Class Variables
@@ -35,7 +35,7 @@ class KeyBoardVehicleTeleop:
         self.speed = 1  # 1 = Slow, 2 = Fast
         self.l = Vector3(0, 0, 0)  # Linear Velocity for Publish
         self.a = Vector3(0, 0, 0)  # Angular Velocity for publishing
-        self.linear_increment = 0.03# How much to increment linear velocities by, to avoid jerkyness
+        self.linear_increment = 0.03  # How much to increment linear velocities by, to avoid jerkyness
         self.linear_limit = 1.5  # Linear velocity limit = self.linear_limit * self.speed
         self.angular_increment = 0.03
         self.angular_limit = 1.5

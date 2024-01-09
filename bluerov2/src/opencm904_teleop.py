@@ -16,7 +16,7 @@
 from __future__ import print_function
 import os
 import time
-import sys, select, termios, tty
+import select, termios, tty
 import rospy
 import numpy as np
 from std_msgs.msg import Bool
@@ -32,8 +32,8 @@ class KeyBoardVehicleTeleop:
         self.speed = 1  # 1 = Slow, 2 = Fast
         self.l = Vector3(0, 0, 0)  # Linear Velocity for Publish
         self.a = Vector3(0, 0, 0)  # Angular Velocity for publishing
-        self.linear_increment = 0.088# How much to increment linear velocities by, to avoid jerkyness
-        self.linear_limit = 360 # Linear velocity limit = self.linear_limit * self.speed
+        self.linear_increment = 0.088  # How much to increment linear velocities by, to avoid jerkyness
+        self.linear_limit = 360  # Linear velocity limit = self.linear_limit * self.speed
         self.angular_increment = 1
         self.angular_limit = 360
         # User Interface

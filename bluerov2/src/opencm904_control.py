@@ -1,10 +1,8 @@
 import rospy
 import numpy as np
 import time
-#import sys
 
-#sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
-from bluerov2.nodes.opencm904_node import OpenCM
+from opencm904_node import OpenCM
 from std_msgs.msg import Int32MultiArray, Float32MultiArray
 from bluerov2.msg import FTSensor
 from geometry_msgs.msg import Twist

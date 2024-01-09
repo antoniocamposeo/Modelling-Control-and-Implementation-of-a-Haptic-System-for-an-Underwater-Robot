@@ -3,9 +3,6 @@
 import rospy
 import numpy as np
 import time
-# import sys
-
-# sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
 
 from geometry_msgs.msg import Twist,Accel
 from nav_msgs.msg import Odometry
@@ -13,9 +10,8 @@ from sensor_msgs.msg import BatteryState
 
 # Message into folder of package
 from bluerov2.msg import State
-
 from tf.transformations import euler_from_quaternion
-from bluerov2.src.bluerov2_bridge_mavlink import Bridge
+from utils.bluerov2_bridge_mavlink import Bridge
 
 
 class BlueRovControl:

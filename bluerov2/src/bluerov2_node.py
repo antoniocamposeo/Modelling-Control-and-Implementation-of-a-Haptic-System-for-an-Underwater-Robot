@@ -15,9 +15,8 @@ import numpy
 import time
 import utm
 import socket
-
 # sys.path.append("/home/antonio/catkin_ws/src/bluerov2")
-from bluerov2.src.bluerov2_bridge_mavlink import Bridge
+from utils.bluerov2_bridge_mavlink import Bridge
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import BatteryState
 from geometry_msgs.msg import Twist,Accel

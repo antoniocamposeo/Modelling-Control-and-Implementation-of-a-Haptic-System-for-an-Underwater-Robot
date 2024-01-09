@@ -342,7 +342,7 @@ class Bridge(object):
         except:
             return [1500, 1500, 1500, 1500]
 
-   '''
+    """
     # Test function to get data of sensor from mavlink protocol.   
     def get_data_force_torque_sensor(self):
         if self.data.keys().__contains__('NAMED_VALUE_INT') is True and self.data.keys().__contains__('DEBUG_VECT') is True:
@@ -367,7 +367,7 @@ class Bridge(object):
             return [f_x, f_y, f_z, m_x, m_y, m_z]
         else:
             return [0, 0, 0, 0, 0, 0]
-        '''
+        """
 
 if __name__ == '__main__':
     bridge = Bridge()
