@@ -22,7 +22,7 @@ import termios
 import time
 import tty
 
-import rospy
+import rospy,sys
 from geometry_msgs.msg import Twist, Accel, Vector3
 
 

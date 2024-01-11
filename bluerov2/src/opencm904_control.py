@@ -1,12 +1,14 @@
 import rospy
 import numpy as np
 import time
+import sys
 
-from opencm904_node import OpenCM
+sys.path.append("/home/uclm/catkin_ws/src/bluerov2")
+
+from src.opencm904_node import OpenCM
 from std_msgs.msg import Int32MultiArray, Float32MultiArray
 from bluerov2.msg import FTSensor
 from geometry_msgs.msg import Twist
-
 
 class OpenCM_Control(OpenCM):
     def __init__(self):
@@ -15,6 +17,7 @@ class OpenCM_Control(OpenCM):
         self.motors_desired_position = [0, 0]
         self.teleop_value = [0.0, 0.0]
         self.step_angle = 0.088
+        self.reset_status = None
         self.MAX_STEP = 4095
         self.MIN_STEP = 0
         self.MAX_ANGLE = 360

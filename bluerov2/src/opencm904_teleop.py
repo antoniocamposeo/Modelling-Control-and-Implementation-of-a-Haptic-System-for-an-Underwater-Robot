@@ -17,7 +17,7 @@ from __future__ import print_function
 import os
 import time
 import select, termios, tty
-import rospy
+import rospy,sys
 import numpy as np
 from std_msgs.msg import Bool
 from geometry_msgs.msg import Twist, Accel, Vector3
