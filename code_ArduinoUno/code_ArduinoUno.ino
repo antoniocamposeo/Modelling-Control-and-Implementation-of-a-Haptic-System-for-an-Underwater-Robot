@@ -16,6 +16,7 @@
 #include "Linduino.h"
 #include "LT_SPI.h"
 #include "LTC1859.h"
+#include "LowPassFilter.h"
 #include <SPI.h>
 #define UART0 Serial 
 
@@ -85,4 +86,3 @@ void loop()
     UART0.write(str.c_str()); 
   }
 }
-
