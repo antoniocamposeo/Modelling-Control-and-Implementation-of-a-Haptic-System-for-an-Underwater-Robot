@@ -63,15 +63,16 @@ void setup()
   }
   
 }
-
+/* TODO: implement interrupt from GPIO of OpenCM904 to Pin 2 or 3 of arduino
+in the function handler will be the UART0.write(str.c_str());
+*/
 
 void loop()
 { 
   volatile float V_CH[8];
   String str;
   // String esp = " ";
-
-  while(UART0.available()==0)
+  while(1)
   { 
     for (int i = 0; i < 8; ++i) {      
       LTC1859_read(LTC1859_CS, adc_command[i], &adc_code);   // Read previous channel conversion (x-1) and start next one (x)
@@ -81,8 +82,10 @@ void loop()
     }
   
     str = String((25 + V_CH[0]) * pow(10, decimales), 0)+String((25 + V_CH[1]) * pow(10, decimales), 0)+String((25 + V_CH[2]) * pow(10, decimales), 0) + String((25 + V_CH[3]) * pow(10,  decimales), 0)+String((25 + V_CH[4]) * pow(10, decimales), 0) + String((25 + V_CH[5]) * pow(10, decimales), 0)+ String("\n");
-  }
-  if(UART0.read() == '0'){
-    UART0.write(str.c_str()); 
+   
+    if(UART0.read() == '0')
+    {
+      UART0.write(str.c_str()); 
+    }
   }
 }
