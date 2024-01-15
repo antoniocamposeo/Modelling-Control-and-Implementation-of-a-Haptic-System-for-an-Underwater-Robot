@@ -43,7 +43,8 @@ uint16_t adc_command[8];         // The LTC1859 command byte
 uint16_t adc_code = 0;        // The LTC1859 code
 
 const int decimales = 4;
-
+volatile float V_CH[8];
+String str;
 // Setup function
 void setup()
 {
@@ -69,10 +70,9 @@ in the function handler will be the UART0.write(str.c_str());
 
 void loop()
 { 
-  volatile float V_CH[8];
-  String str;
+  
   // String esp = " ";
-  while(1)
+  while(UART0.available() == 0)
   { 
     for (int i = 0; i < 8; ++i) {      
       LTC1859_read(LTC1859_CS, adc_command[i], &adc_code);   // Read previous channel conversion (x-1) and start next one (x)
@@ -80,12 +80,15 @@ void loop()
       //V_CH[i] = LowPassFilter_Update(&filter,LTC1859_code_to_voltage(adc_code, LTC1859_vref, range_low_high, uni_bipolar));
       V_CH[i] =  LTC1859_code_to_voltage(adc_code, LTC1859_vref, range_low_high, uni_bipolar);
     }
-  
     str = String((25 + V_CH[0]) * pow(10, decimales), 0)+String((25 + V_CH[1]) * pow(10, decimales), 0)+String((25 + V_CH[2]) * pow(10, decimales), 0) + String((25 + V_CH[3]) * pow(10,  decimales), 0)+String((25 + V_CH[4]) * pow(10, decimales), 0) + String((25 + V_CH[5]) * pow(10, decimales), 0)+ String("\n");
+    
+   }
+   UART0.write(str.c_str()); 
+   UART0.flush();
+   // delay(1);
    
-    if(UART0.read() == '0')
-    {
-      UART0.write(str.c_str()); 
-    }
+    //if(UART0.read() == '0')
+    //{
+    //}
   }
-}
+//}

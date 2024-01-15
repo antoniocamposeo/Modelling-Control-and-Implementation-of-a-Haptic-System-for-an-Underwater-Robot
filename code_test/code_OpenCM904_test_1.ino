@@ -8,9 +8,8 @@
 #include "./std_msgs/String.h"
 #include <Dynamixel2Arduino.h>
 
-#define USE_USBCON
-#define timerOnePeriod 13200 // Set Timer Period in microsec
 
+#define timerOnePeriod 13000 // Set Timer Period in microsec
 //#define timerOnePeriod 500 
 
 /* Motor Variables and Parameters */
@@ -96,6 +95,8 @@ ros::Publisher data_opencm("data_opencm", &data_msg);
 // Callback Function to Subscribe to a topic and get data
 void messageCb( const std_msgs::Int32MultiArray& msg) {
   
+    // Set callback active  true 
+    callback_active = true;
     // Store motor reference position
     for( i = 0; i < DXL_ID_CNT; i++){
         // Insert a new Goal Position to the SyncWrite Packet
@@ -108,7 +109,9 @@ void messageCb( const std_msgs::Int32MultiArray& msg) {
     // Change the info of motors struct   
     sw_infos.is_info_changed = true;
     // Send data to the motors
-    dxl.syncWrite(&sw_infos);     
+    dxl.syncWrite(&sw_infos); 
+    // Set Boolean to false 
+    callback_active = false;
 }
 
 // Define a Subriber to get motor position reference from topic /motor_position
@@ -148,7 +151,6 @@ void setup(){
 
 
 void loop(){
-  
 } 
 
 void init_motors(){
@@ -209,11 +211,12 @@ void handler_data_sender(void) {
   {
     digitalWrite(ResetPin, HIGH);
     }
-  
-  
+  // Check ros connection if available go in the condition
   if (nh.connected())
     {
   // Check if the ros callback is active
+      if(callback_active == false)
+      {
         // Send a msg to arduino to get the data;
         Serial2.write('0');
         // Read the array of char from arduino 
@@ -229,11 +232,8 @@ void handler_data_sender(void) {
             }
             // Create the string to send to the topic               
             data_msg.data = (test + String(value_position[0]+OFFSET_STR)+String(value_position[1]+OFFSET_STR) + String(reset_input)).c_str();
-            data_opencm.publish(&data_msg);
-        }else{
-    nh.initNode(); 
-}
-
-// Ros function to update the callback function
- nh.spinOnce();
+            data_opencm.publish( &data_msg);
+        }
+       }
+  nh.spinOnce(); // Ros function to update the callback function
 }
