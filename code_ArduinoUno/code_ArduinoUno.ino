@@ -83,12 +83,13 @@ void loop()
     str = String((25 + V_CH[0]) * pow(10, decimales), 0)+String((25 + V_CH[1]) * pow(10, decimales), 0)+String((25 + V_CH[2]) * pow(10, decimales), 0) + String((25 + V_CH[3]) * pow(10,  decimales), 0)+String((25 + V_CH[4]) * pow(10, decimales), 0) + String((25 + V_CH[5]) * pow(10, decimales), 0)+ String("\n");
     
    }
-   UART0.write(str.c_str()); 
-   UART0.flush();
+   
    // delay(1);
    
-    //if(UART0.read() == '0')
-    //{
-    //}
+    if(UART0.read() == '0')
+    {
+      UART0.write(str.c_str()); 
+   UART0.flush();
+    }
   }
 //}
