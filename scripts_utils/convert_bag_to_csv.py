@@ -1,6 +1,13 @@
 #!/usr/bin/python
 
 """ PYHTON SCRIPT TO CONVERT DATA OF MUVIC POSE INTO TUM FORMAT """
+
+"""
+Tips to use the code
+- go in the folder of the file 
+- run the code 
+- python3 convert_bag_to_csv.py "folder-path-of-bag-files"
+"""
 import pandas as pd
 import numpy as np
 import os
@@ -14,7 +21,6 @@ from bagpy import bagreader
 
 def create_arg_parser():
     # Creates and returns the ArgumentParser object
-
     parser = argparse.ArgumentParser(description='Insert the Path of bag files.')
     parser.add_argument('inputDirectory',
                     help='Path to the input directory.',type=str)
@@ -56,9 +62,3 @@ if __name__ == "__main__":
         topic_data = []
         for topic in topic:
             topic_data.append(conv_bag_file(topic))
-
-    # Insert the name of file txt to be saved
-    # name_txt_file = '/home/antonio/PycharmProjects/from_posegt_to_tum/trajectory_files/TUM_muvic.txt'
-
-    # topic_data_1 = conv_bag_file(path_of_bag_file, topic_name_1)
-    # topic_data_2 = conv_bag_file(path_of_bag_file, topic_name_2)

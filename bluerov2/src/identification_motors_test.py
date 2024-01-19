@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 import rospy
 import numpy as np
-from std_msgs.msg import Int32MultiArray
-"""
-- Sinusoidal signals (I attach the Matlab program to create the references).
-- 5 steps of amplitude 30 deg.
-- 5 logarithmic chirps like the one from the other day.
-"""
-# array = np.loadtxt('/csv_files/sin_5.csv')
-# array = np.loadtxt('/csv_files/sin_1.csv')
-array = np.loadtxt('../catkin_ws/src/bluerov2/csv_files/logaritmic_chirp_3deg.csv')
 
-array = array.T
+from std_msgs.msg import Int32MultiArray
+
+"""
+Input signals (I attach the Matlab program to create the references).
+"""
+# import motor reference position from csv file
+array = np.loadtxt('../catkin_ws/src/bluerov2/csv_files/logaritmic_chirp_3deg.csv')
+array = array.T # np.transpose(array)
+# print(array)
 
 step_angle = 4093 / 360  # 11.377777 convert from step to angle
 step_value = 360 / 4093  # 0.087890625
+
 reset_status_board = None
 reset_status = None
 
@@ -46,11 +46,16 @@ def _status_callback(msg):
 
 
 def main():
+    
     pub = rospy.Publisher('motor_position', Int32MultiArray, queue_size=10)
     rospy.Subscriber('opencm904/board_status_reset', Int32MultiArray, _status_callback, queue_size=5)
+    
     rospy.init_node('identification', anonymous=True)
-    rate = rospy.Rate(77)  # 10hz
+    
+    rate = rospy.Rate(77)  # 77hz
+
     msg_position = Int32MultiArray()
+    
     start_position_motor_1 = 180
     finish_position_motor_1 = 210
 
