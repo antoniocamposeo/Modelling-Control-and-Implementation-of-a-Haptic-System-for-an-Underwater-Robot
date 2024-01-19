@@ -5,7 +5,21 @@ import pandas as pd
 import numpy as np
 import os
 import time
+import argparse
+import sys
+from os import listdir
+from os.path import isfile, join
 from bagpy import bagreader
+
+
+def create_arg_parser():
+    # Creates and returns the ArgumentParser object
+
+    parser = argparse.ArgumentParser(description='Insert the Path of bag files.')
+    parser.add_argument('inputDirectory',
+                    help='Path to the input directory.',type=str)
+
+    return parser
 
 
 def conv_bag_file(topic):
@@ -24,16 +38,24 @@ def conv_bag_file(topic):
 
 
 if __name__ == "__main__":
-    # Insert paths of folders
-    name_folder = 'log_5_1.bag'
-    path_of_bag_file = "/home/antonio/Desktop/bagfile_folder"
-    b = bagreader(path_of_bag_file + '/' + name_folder)
+    arg_parser = create_arg_parser()
+    parsed_args = arg_parser.parse_args(sys.argv[1:])
+    mypath = parsed_args.inputDirectory
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    print(onlyfiles)
+    #print(parsed_args.inputDirectory)
+    if os.path.exists(parsed_args.inputDirectory):
+       print("File exist")
     # Insert the name of topic
     topic = ['/opencm904/motor_actual_position_raw','/opencm904/sensor_ft_data', '/motor_position']
-
-    topic_data = []
-    for topic in topic:
-        topic_data.append(conv_bag_file(topic))
+    # Insert paths of folders
+    path_of_bag_file = mypath
+    for file in onlyfiles:
+        name_folder = file
+        b = bagreader(path_of_bag_file + '/' + name_folder)
+        topic_data = []
+        for topic in topic:
+            topic_data.append(conv_bag_file(topic))
 
     # Insert the name of file txt to be saved
     # name_txt_file = '/home/antonio/PycharmProjects/from_posegt_to_tum/trajectory_files/TUM_muvic.txt'
